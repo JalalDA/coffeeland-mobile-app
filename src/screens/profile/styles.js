@@ -55,6 +55,22 @@ const styles = StyleSheet.create({
         marginTop : 20,
         marginBottom : 20,
         padding : 20
+    },
+    imgProfile : {
+        display : 'flex',
+        alignItems : 'center',
+        justifyContent : 'center',
+        width : '40%'
+    },
+    btnImage : {
+        display : 'flex', 
+        alignItems : 'center', 
+        justifyContent : 'center', 
+        padding :12, 
+        borderRadius : 10, 
+        backgroundColor : '#FFA32B',
+        marginTop : 10, 
+        width : '100%'
     }
 })
 

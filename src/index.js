@@ -17,6 +17,8 @@ import Checkout from './screens/cart/Checkout';
 import Payment from './screens/cart/Payment';
 import Reset from './screens/auth/Reset';
 import History from './screens/cart/History';
+import SplashScreen from './screens/splash/SplashScreen';
+import ImagePicker from './components/imagePicker/ImagePicker';
 
 const Router = () => {
   const Stack = createNativeStackNavigator()
@@ -25,6 +27,8 @@ const Router = () => {
     <StatusBar barStyle={'dark-content'}/>
     <NavigationContainer>
       <Stack.Navigator>
+        <Stack.Screen name='Splash' component={SplashScreen} options={{headerShown : false}}/>
+        <Stack.Screen name='image' component={ImagePicker} options={{headerShown : false}} />
         <Stack.Screen name='Home' component={Home} options={{headerShown:false}}/>
         <Stack.Screen name='Auth' component={Auth} options={{headerShown:false}}/>
         <Stack.Screen name='Sign In' component={SignIn} options={{headerShown:false}}/>

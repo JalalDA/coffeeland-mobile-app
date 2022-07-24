@@ -107,7 +107,6 @@ const Homepage = ({navigation}) => {
 
   return (
     <>
-
     <StatusBar barStyle={'light-content'}/>
     <View style={styles.container}>
       <ScrollView>

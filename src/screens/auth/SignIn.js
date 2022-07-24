@@ -1,33 +1,50 @@
-import { View, Text, ImageBackground, StatusBar, TextInput, Pressable, Image } from 'react-native'
+import { View, Text, ImageBackground, StatusBar, TextInput, Pressable, Image, ActivityIndicator } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import styles from './styles'
 import bg from '../../assets/img/login.png'
 import google from '../../assets/img/google.png'
 import { useDispatch, useSelector } from 'react-redux'
-import { getUserInfo, deleteUserInfo } from '../../redux/slice/loginSlice'
+import { getUserInfo, deleteUserInfo, pushUserInfo } from '../../redux/slice/loginSlice'
 import Toast from 'react-native-toast-message';
+import { signIn } from '../../modules/axios'
 // import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const SignIn = ({navigation}) => {
-    console.log(process.env.SERVER_HOST);
+    const [load, setLoad] = useState(false)
     const [body, setBody] = useState({
         email : '',
         password : ''
     })
     const dispatch = useDispatch()
-    const {msg, isSucces, token} = useSelector(state=>state.login)
-    console.log(isSucces, token);
+    const {token} = useSelector(state=>state.login)
+
+    const login = async ()=>{
+        try {
+            setLoad(true)
+            const result = await signIn(body)
+            dispatch(pushUserInfo(result.data))
+            Toast.show({
+                type : 'success', 
+                text1 : result.data.msg
+            })
+            setLoad(false)
+            setTimeout(()=>{
+                navigation.navigate('Drawer')
+            }, 1000)
+        } catch (error) {
+            console.log(error);
+            Toast.show({
+                type : 'error', 
+                text1 : error.response.data.msg
+            })
+            setLoad(false)
+        }
+    }
     useEffect(()=>{
         if(token){
             navigation.navigate('Drawer')
         }
-        if(isSucces === false){
-            Toast.show({
-                type : 'error',
-                text1 : msg
-            })
-        }
-    }, [isSucces])
+    }, [token])
 
     return (
     <>
@@ -55,10 +72,10 @@ const SignIn = ({navigation}) => {
                 <Text onPress={()=>{
                     navigation.navigate('Forgot')
                 }} style={{fontSize : 14, marginTop : 10, color : '#FFFFFF', borderBottomColor:'#FFFFFF', borderBottomWidth : 1, width:120}}>Forgot Password?</Text>
-                <Pressable style={styles.buttonLogin} onPress={()=>{
-                    dispatch(getUserInfo(body))
-                }}>
-                    <Text style={{color : '#FFFFFF', fontSize : 17, fontWeight : '700'}}>Login</Text>
+                <Pressable style={styles.buttonLogin} onPress={login}> 
+                    <Text style={{color : '#FFFFFF', fontSize : 17, fontWeight : '700'}}>
+                        {load ? <ActivityIndicator size={'small'} color={'#FFFFFF'}/> : 'Login'}
+                    </Text>
                 </Pressable>
                 <Pressable style={styles.btnGoogle} onPress={()=>{
                         dispatch(deleteUserInfo())

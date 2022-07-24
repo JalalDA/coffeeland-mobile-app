@@ -1,4 +1,4 @@
-import { View, Text, Image, Pressable } from 'react-native'
+import { View, Text, Image, Pressable, ActivityIndicator, Modal } from 'react-native'
 import React, { useState } from 'react'
 import backBtn from '../../assets/img/backbtn.png'
 import styles from './styles'
@@ -10,12 +10,16 @@ import { useSelector } from 'react-redux'
 
 const Payment = ({navigation, route}) => {
   const [paymentMethod, setPaymentMethod] = useState('Card')
+  const [showModal, setShowModal] = useState(false)
+  const [load, setLoad] = useState(false)
+  const [msg, setMsg] = useState("")
   const {product, user} = route.params
   const total_payment = product.count * product.price
   const {token} = useSelector(state=>state.login)
 
   const pay = async ()=>{
     try {
+      setLoad(true)
       const body = {
         product_name : product.name,
         address : user.delivery_adress,
@@ -26,14 +30,38 @@ const Payment = ({navigation, route}) => {
       }
       const res = await createTransaction(body, token)
       console.log(res);
-      alert('success create payment')
-      navigation.navigate('Drawer')
+      setMsg("Transaction success")
+      setShowModal(true)
+      setLoad(false)
+      setTimeout(()=>{
+        navigation.navigate('Drawer')
+      }, 2000)
     } catch (error) {
       console.log(error);
+      setMsg(error.response.data.msg)
+      setShowModal(true)
+      setLoad(false)
     }
   }
   return (
     <View style={styles.container}>
+      <Modal  animationType='slide'
+          transparent={true}
+          visible={showModal}
+          onRequestClose={()=>{
+            setShowModal(!showModal)
+                        }}>
+                          <View style={styles.modalView}>
+                          <View style={styles.cardModal}>
+                            <Text style={{color : "#FFFFFF", fontSize : 18, fontWeight : '700', marginBottom : 20}}>{msg}</Text>
+                            <Pressable style={styles.btnOption} onPress={()=>{
+                              setShowModal(!showModal)
+                            }}>
+                              <Text>OK</Text>
+                            </Pressable>
+                          </View>
+                          </View>
+      </Modal>
         <View style={styles.top}>
             <Image source={backBtn}/>
             <Text style={styles.textTop}>Payment</Text>
@@ -90,7 +118,9 @@ const Payment = ({navigation, route}) => {
               </View>
             </View>
             <Pressable style={styles.payment}>
-              <Text style={{color : '#FFFFFF', fontSize : 17, fontWeight : '700'}} onPress={pay}>Proceed Payment</Text>
+              <Text style={{color : '#FFFFFF', fontSize : 17, fontWeight : '700'}} onPress={pay}>
+                {load ? <ActivityIndicator size={'small'} color={'#FFA32B'}/> : 'Proceed Payment'}
+              </Text>
             </Pressable>
         </View>
     </View>

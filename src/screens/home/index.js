@@ -1,4 +1,4 @@
-import { View, Text, ImageBackground, Pressable } from 'react-native'
+import { View, Text, ImageBackground, Pressable, StatusBar } from 'react-native'
 import React from 'react'
 import styles from './style'
 import bg from '../../assets/img/bgimage.png'
@@ -6,6 +6,7 @@ import bg from '../../assets/img/bgimage.png'
 const Home = ({navigation}) => {
   return (
     <View style={{flex : 1}}>
+      <StatusBar barStyle={'dark-content'} backgroundColor={'#666'}/>
         <ImageBackground style={styles.image} source={bg}>
         <Text style={styles.textWellcome}>Coffe For Everyone</Text>
         <Pressable onPress={()=>{

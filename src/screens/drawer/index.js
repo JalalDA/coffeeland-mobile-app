@@ -1,4 +1,4 @@
-import { View, Text, Button, Image } from 'react-native'
+import { View, Text, Button, Image, StatusBar } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { getProfileInfo } from '../../redux/slice/profileSlice'
@@ -21,6 +21,7 @@ import Profile from '../profile';
     const dispatch = useDispatch()
     return (
         <>
+        <StatusBar backgroundColor={'transparent'} barStyle={'dark-content'}/>
         <View style={styles.pofileContainer}>
             <Image style={styles.profileImg} source={photo ? {uri : photo} : nulProfile}/>
             <Text style={{color : '#FFFFFF', fontSize : 17, fontWeight : '600', marginTop : 10}}>{display_name}</Text>

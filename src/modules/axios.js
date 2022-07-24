@@ -47,6 +47,26 @@ export const createTransaction = (body, token)=>{
     return axios.post(`${SERVER_HOST}/transaction`, body, config)
 }
 
-export const getHistory = (id)=>{
-    return axios.get(`${SERVER_HOST}/history/:${id}`)
+export const getHistory = (token)=>{
+    const config = {
+        headers : {
+            Authorization : `Bearer ${token}`
+        }
+    }
+    return axios.get(`${SERVER_HOST}/history`, config)
+}
+
+export const deleteHistory = (body)=>{
+    return axios.patch(`${SERVER_HOST}/history/delete`, body)
+}
+
+export const updateProfile = (body, token)=>{
+    const config = {
+
+        headers : {
+            'content-type' : 'multipart/form-data',
+            Authorization : `Bearer ${token}`
+        }
+    }
+    return axios.patch(`${SERVER_HOST}/user`, body, config)
 }
