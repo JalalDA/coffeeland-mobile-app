@@ -71,7 +71,7 @@ $ npx react-native run-android
 
 <br>
 <img src="src/assets/img/detail.png" style="width: 200px">
-<img src="src/assets/img/homepagess.png" style="width: 200px">
+<img src="src/assets/img/hompagess.png" style="width: 200px">
 <!-- -->
 
 </div>
