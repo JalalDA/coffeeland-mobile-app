@@ -29,21 +29,24 @@ const styles = StyleSheet.create({
         // flexDirection : 'row', 
         width : '100%', 
         marginTop : 20,
-        marginBottom : 20
+        marginBottom : 20, 
     }, 
     textBar : {
         fontSize : 18, 
         fontWeight : '700', 
-        marginRight : 20
+        marginRight : 20,
+        // marginBottom : 10
     }, 
     textBarAct : {
-        fontSize : 20, 
+        fontSize : 18, 
         fontWeight : '700', 
         marginRight : 20, 
         color : '#6A4029',
         borderBottomWidth : 2,
         borderBottomColor : '#6A4029',
-        paddingBottom : 5
+        paddingBottom : 5,
+        // marginBottom : 10, 
+        // marginTop : 10, 
     },
     productWrap : {
         width : 150,
@@ -96,7 +99,17 @@ const styles = StyleSheet.create({
         height : 30,
         display : 'flex', 
         alignItems : 'center', 
-        justifyContent : 'center'
+        justifyContent : 'center',
+        position : 'absolute', 
+        bottom : 20, 
+        left : 20
+    }, 
+    sort : {
+        backgroundColor : '#FFA32B', 
+        padding : 15, 
+        borderRadius : 10, 
+        marginTop : 10,
+        width : '30%'
     }
 })
 

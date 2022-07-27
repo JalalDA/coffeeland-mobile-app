@@ -83,6 +83,11 @@ const styles = StyleSheet.create({
         alignItems : 'center',
         justifyContent : 'center',
         width : 300
+    }, 
+    eye : {
+        position : 'absolute', 
+        bottom : 5, 
+        right : 0
     }
 })
 

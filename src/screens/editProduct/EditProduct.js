@@ -94,7 +94,7 @@ const EditProduct = ({navigation, route}) => {
             console.log(data);
             await updateProduct(id, data, token)
             // const res = axios.patch(`https://coffeelands.herokuapp.com/product/:${id}`, data)
-            alert('statusnya success')
+            alert('update success')
             Toast.show({
                 type : 'success', 
                 text1 : "success"
@@ -126,7 +126,9 @@ const EditProduct = ({navigation, route}) => {
     }, [])
     // console.log(product);
   return (
+
     <View style={styles.container}>
+        <Toast/>
         <ScrollView>
         <View style={styles.top}>
             <Image source={backBtn}/>

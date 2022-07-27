@@ -22,6 +22,7 @@ import ImagePicker from './components/imagePicker/ImagePicker';
 import Products from './screens/products/Products';
 import EditProduct from './screens/editProduct/EditProduct';
 import AddProduct from './screens/addProduct/AddProduct';
+import FilterProducts from './screens/products/FilterProducts';
 
 const Router = () => {
   const Stack = createNativeStackNavigator()
@@ -48,6 +49,7 @@ const Router = () => {
         <Stack.Screen name='Products' component={Products} options={{headerShown : false}}/>
         <Stack.Screen name='EditProduct' component={EditProduct} options={{headerShown : false}}/>
         <Stack.Screen name='AddProduct' component={AddProduct} options={{headerShown : false}}/>
+        <Stack.Screen name='Filter' component={FilterProducts} options={{headerShown : false}}/>
       </Stack.Navigator>
     </NavigationContainer>
     </>

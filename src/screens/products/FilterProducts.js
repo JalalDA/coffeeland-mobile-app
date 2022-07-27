@@ -1,4 +1,4 @@
-import { View, Text, Image, TextInput, ScrollView, FlatList, Pressable } from 'react-native'
+import { View, Text, Image, TextInput, ScrollView, FlatList, Pressable, TouchableOpacity } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import styles from './styles'
 import seacrh from '../../assets/img/search.png'
@@ -23,15 +23,13 @@ const Product = ({pictures, name, price, id, navigation})=>{
       </View>
   }
 
-const Products = ({navigation}) => {
+const FilterProducts = ({navigation}) => {
     const [actMenu, setActMenu] = useState('all')
-    const [favProduct, setFavProduct] = useState([])
     const [all, setAll] = useState([])
-    const [coffee, setCoffee] = useState([])
-    const [nonCoffe, setNonCoffee] = useState([])
-    const [food, setFood] = useState([])
     const [search, setSeacrch] = useState('')
     const [limit, setLimit] = useState(6)
+    const [sort, setSort] = useState('price')
+    const [order, setOrder] = useState('asc')
     const {role} = useSelector(state=>state.login)
     const renderProduct = ({item})=>(
         <Product name={item.name} pictures={item.pictures} price={item.price} id={item.id} navigation={navigation}/>
@@ -42,45 +40,27 @@ const Products = ({navigation}) => {
     useEffect(()=>{
         const getProduct = async ()=>{
             try {
-                let params = ''
-                if(limit){
-                    params += `?limit=${limit}`
-                }
-                if(search){
-                    params +=`&name=${search}`
-                }
+                let params = `name=${search}&sort=${sort}&order=${order}&limit=${limit}&category=${actMenu}`
                 if(actMenu === 'favorit'){
-                    params = `favorit?limit=${limit}&name=${seacrh}`
+                    params = 'favorit'
+                    const fav = await getAllProduct(params)
+                    setAll(fav.data.data)
                 }
-                if(actMenu === 'food'){
-                    params = `?catogory_id=1`
+                if(actMenu === 'all'){
+                    params = ''
+                    const allProduct = await getAllProduct(params)
+                    setAll(allProduct.data.data)
+                }else if(actMenu !== 'favorit'){
+                    const res = await filterProduct(params)
+                    setAll(res.data.data.data)
+                    console.log(res.data.data);
                 }
-                if(actMenu === 'coffee'){
-                    params = `?catogory_id=2`
-                }
-                if(actMenu === 'noncoffee'){
-                    params = `?catogory_id=3`
-                }
-                const res = await getAllProduct(params)
-                setAll(res.data.data)
-                // console.log('test');
-            } catch (error) {
-                console.log(error);
-            }
-        }
-        const filteredProduct = async ()=>{
-            try {
-                let params = ''
-                const filt = await filterProduct(params)
-                console.log(filt.data.data);
-                setCoffee(filt.data.data)
             } catch (error) {
                 console.log(error);
             }
         }
         getProduct()
-        filteredProduct()
-    }, [actMenu, search])
+    }, [actMenu, search, order])
 
   return (
     <>
@@ -91,6 +71,17 @@ const Products = ({navigation}) => {
             setSeacrch(text)
         }}></TextInput>
     </View>
+    <TouchableOpacity
+        onPress={()=>{
+            if(order === 'asc'){
+                setOrder('desc')
+            }else{
+                setOrder('asc')
+            }
+        }}
+        style={styles.sort}>
+        <Text style={{color : '#FFFFFF', fontSize : 14, fontWeight : '700'}}>{order === 'asc' ? "Most Expensive" : "Cheapest"}</Text>
+    </TouchableOpacity>
     <ScrollView style={styles.menuBar} horizontal={true}>
         <Text style={ actMenu === 'all' ? styles.textBarAct : styles.textBar} onPress={()=>{
             setActMenu('all')
@@ -104,8 +95,8 @@ const Products = ({navigation}) => {
         <Text style={ actMenu === 'coffee' ? styles.textBarAct : styles.textBar} onPress={()=>{
             setActMenu('coffee')
         }}>Coffee</Text>
-        <Text style={ actMenu === 'noncoffee' ? styles.textBarAct : styles.textBar} onPress={()=>{
-            setActMenu('noncoffee')
+        <Text style={ actMenu === 'non_coffee' ? styles.textBarAct : styles.textBar} onPress={()=>{
+            setActMenu('non_coffee')
         }}>Non Coffee</Text>
     </ScrollView>
     <FlatList data={all} renderItem={renderProduct} numColumns={2} onEndReached={()=>{
@@ -127,4 +118,4 @@ const Products = ({navigation}) => {
   )
 }
 
-export default Products
+export default FilterProducts

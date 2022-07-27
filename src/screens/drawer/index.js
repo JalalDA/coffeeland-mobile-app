@@ -56,7 +56,7 @@ import Profile from '../profile';
           }}>
             <View style={styles.modalView}>
               <View style={styles.cardModal}> 
-                <Text style={{color : '#FFFFFF', fontSize : 18, fontWeight : '700'}}>Delete item?</Text>
+                <Text style={{color : '#FFFFFF', fontSize : 18, fontWeight : '700'}}>Do you wanna logout?</Text>
               <View style={styles.option}>
               <Pressable style={styles.btnOption} 
                 onPress={logoutServer}>
@@ -113,7 +113,7 @@ const MyDrawer = ({navigation}) => {
     if(!token){
       navigation.navigate('Sign In')
     }
-}, [])
+}, [token])
   return (
     <Drawer.Navigator 
         useLegacyImplementation={true}

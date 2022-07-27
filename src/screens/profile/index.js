@@ -1,4 +1,4 @@
-import { View, Text, Image, ScrollView, TextInput, Pressable, PermissionsAndroid } from 'react-native'
+import { View, Text, Image, ScrollView, TextInput, Pressable, PermissionsAndroid, ActivityIndicator } from 'react-native'
 import React, { useState } from 'react'
 import backBtn from '../../assets/img/backbtn.png'
 import styles from './styles'
@@ -7,6 +7,7 @@ import arrow from '../../assets/img/arrow.png'
 import { useSelector } from 'react-redux'
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker'
 import { updateProfile } from '../../modules/axios'
+import Toast  from 'react-native-toast-message'
 
 
 const Profile = ({navigation}) => {
@@ -14,6 +15,9 @@ const Profile = ({navigation}) => {
     const {display_name, photo, email, delivery_adress, phone} = useSelector(state=>state.profile.value)
     const [imagePicker, setImagePicker] = useState("")
     const [phoneNumber, setPhoneNumber] = useState("")
+    const [load, setLoad] = useState(false)
+    const [displayName, setDisplayName] = useState('')
+    const [address, setAdress] = useState('')
     const {token} = useSelector(state=>state.login)
 
     const options = {
@@ -24,21 +28,31 @@ const Profile = ({navigation}) => {
     const saveChange = async ()=>{
 
         try {
+            setLoad(true)
             const data = new FormData()
                 data.append('photo', {
-                    uri : imagePicker.uri,
-                    name : imagePicker.fileName,
-                    type : imagePicker.type
+                    uri : imagePicker && imagePicker.uri,
+                    name : imagePicker && imagePicker.fileName,
+                    type : imagePicker && imagePicker.type
                 })
-                data.append('display_name', display_name)
-                data.append('email', email)
+                data.append('display_name', displayName)
                 data.append('phone', phoneNumber ? phoneNumber : phone )
-                data.append('delivery_adress', delivery_adress)
+                data.append('delivery_adress', address)
             const res = await updateProfile(data, token)
-            alert(res.data.msg)
+            Toast.show({
+                type : 'success', 
+                text1 : "Update success"
+            })
+            console.log(res.data);
             console.log(data);
+            setLoad(false)
         } catch (error) {
             console.log(error);
+            Toast.show({
+                type : 'error', 
+                text1 : "failed"
+            })
+            setLoad(false)
         }
     }
 
@@ -108,10 +122,22 @@ const Profile = ({navigation}) => {
                 <Pressable onPress={requestCameraPermission} style={styles.btnImage}><Text style={{color : '#FFFFFF', fontSize : 14, fontWeight : '700'}}>Open Camera</Text></Pressable>
             </View>
             <View style={{width:'55%'}}>
-                <TextInput style={styles.line} editable={editable}>{display_name}</TextInput>
-                <TextInput style={styles.line} editable={editable}>{email}</TextInput>
-                <TextInput onChangeText={(text)=>setPhoneNumber(text)} style={styles.line} editable={editable}>{phone}</TextInput>
-                <TextInput style={styles.line} editable={editable}>{delivery_adress}</TextInput>
+                <TextInput
+                defaultValue={display_name}
+                    onChangeText={(text)=>{
+                        setDisplayName(text)
+                    }}
+                    style={styles.line} editable={editable}></TextInput>
+                <TextInput style={styles.line} editable={false}>{email}</TextInput>
+                <TextInput
+                defaultValue={phone} 
+                onChangeText={(text)=>setPhoneNumber(text)} style={styles.line} editable={editable}>{phone}</TextInput>
+                <TextInput
+                defaultValue={delivery_adress}
+                onChangeText={text=>{
+                    setAdress(text)
+                }}
+                style={styles.line} editable={editable}></TextInput>
             </View>
         </View>
         <Pressable style={styles.cardView} onPress={()=>{
@@ -133,8 +159,11 @@ const Profile = ({navigation}) => {
             <Image source={arrow}/>
         </View>
         <Pressable style={styles.btn} onPress={saveChange}>
-            <Text style={{color : '#FFFFFF', fontSize : 17, fontWeight : '700'}}>Save Change</Text>
+            <Text style={{color : '#FFFFFF', fontSize : 17, fontWeight : '700'}}>
+                {load ? <ActivityIndicator size={'small'} color={'#FFFFFF'}/> : 'Save Change'}
+            </Text>
         </Pressable>
+        <Toast/>
         </ScrollView>
     </View>
   )

@@ -132,7 +132,7 @@ const Homepage = ({navigation}) => {
       <View style={{display : 'flex', flexDirection : 'row', width : '90%', justifyContent : 'space-between', marginTop : 20}}>
           <Text style={styles.priceProduct}>Favorit</Text>
           <Text onPress={()=>{
-            navigation.navigate('Products')
+            navigation.navigate('Filter')
           }}>See more</Text>
         </View>
       <FlatList horizontal={true} data={favProduct} renderItem={renderProduct}/>
@@ -140,21 +140,28 @@ const Homepage = ({navigation}) => {
       <View style={{flex : 1}}>
         <View style={{display : 'flex', flexDirection : 'row', width : '90%', justifyContent : 'space-between', marginTop : 20}}>
           <Text style={styles.priceProduct}>Coffee</Text>
-          <Text>See more</Text>
+          <Text onPress={()=>{
+            navigation.navigate('Filter')
+          }}
+          >See more</Text>
         </View>
       <FlatList horizontal={true} data={coffee} renderItem={renderProduct}/>
       </View>
       <View style={{flex : 1}}>
         <View style={{display : 'flex', flexDirection : 'row', width : '90%', justifyContent : 'space-between', marginTop : 20}}>
           <Text style={styles.priceProduct}>Non Coffee</Text>
-          <Text>See more</Text>
+          <Text onPress={()=>{
+            navigation.navigate('Filter')
+          }}>See more</Text>
         </View>
       <FlatList horizontal={true} data={nonCoffe} renderItem={renderProduct}/>
       </View>
       <View style={{flex : 1}}>
         <View style={{display : 'flex', flexDirection : 'row', width : '90%', justifyContent : 'space-between', marginTop : 20}}>
           <Text style={styles.priceProduct}>Food</Text>
-          <Text>See more</Text>
+          <Text onPress={()=>{
+            navigation.navigate('Filter')
+          }}>See more</Text>
         </View>
       <FlatList horizontal={true} data={food} renderItem={renderProduct}/>
       </View>

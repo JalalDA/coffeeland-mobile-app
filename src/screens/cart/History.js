@@ -47,14 +47,14 @@ const History = () => {
                 const result = await getHistory(token)
                 // console.log('first');
                 if(result){
-                  setProduct([...product], result.data.data)
+                  setProduct(result.data.data)
                 }
             } catch (error) {
                 console.log(error);
             }
         }
         getUserHistory()
-    }, [product])
+    }, [])
   return (
     <>
     <StatusBar barStyle={'dark-content'}/>
