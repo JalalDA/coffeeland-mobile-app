@@ -14,36 +14,37 @@ const menuBar = [
   {title : 'Non Coffee'},
 ]
 
-const menuProduct = [
-  {
-    id : 1,
-    img : huzelnut,
-    title : 'Huzelnut Latte',
-    price : 20000
-  },
-  {
-    id : 2,
-    img : huzelnut,
-    title : 'Title',
-    price : 20000
-  },
-  {
-    id : 3,
-    img : huzelnut,
-    title : 'Title',
-    price : 20000
-  },
-  {
-    id : 4,
-    img : huzelnut,
-    title : 'Title',
-    price : 20000
-  }
-]
+// const menuProduct = [
+//   {
+//     id : 1,
+//     img : huzelnut,
+//     title : 'Huzelnut Latte',
+//     price : 20000
+//   },
+//   {
+//     id : 2,
+//     img : huzelnut,
+//     title : 'Title',
+//     price : 20000
+//   },
+//   {
+//     id : 3,
+//     img : huzelnut,
+//     title : 'Title',
+//     price : 20000
+//   },
+//   {
+//     id : 4,
+//     img : huzelnut,
+//     title : 'Title',
+//     price : 20000
+//   }
+// ]
 const Item = ({title, actMenu, setActMenu})=>{
   return <View style={styles.menuBar}>
     <Text style={actMenu  === title ? styles.textMenuAct : styles.textMenu} onPress={()=>{
       setActMenu(title)
+      console.log(title);
     }}>{title}</Text>
   </View>
 }
@@ -54,8 +55,7 @@ const Product = ({pictures, name, price, id, navigation})=>{
       navigation.navigate('Product', {id})
     }} style={styles.titleProduct}>{name}</Text>
     <Text style={styles.priceProduct}>{price}</Text>
-        </View>
-
+    </View>
 }
 
 
@@ -85,7 +85,9 @@ const Homepage = ({navigation}) => {
     const categoryProduct = async (idCategory)=>{
       try {
         const coffeeProduct = await getCategoryProduct(idCategory)
-        
+        // if(actMenu === 'Coffee'){
+        //   setFavProduct(coffeeProduct.data.data)
+        // }
         if(idCategory === 1){
           setFood(coffeeProduct.data.data)
         }
@@ -126,7 +128,13 @@ const Homepage = ({navigation}) => {
         <TextInput placeholder={'Search'}></TextInput>
       </View>
       <View style={{flex : 1}}>
-      <FlatList horizontal={true} data={menuBar} renderItem={renderItem}/>
+      {/* <FlatList horizontal={true} data={menuBar} renderItem={renderItem}/> */}
+      <View style={{display : 'flex', flexDirection : 'row', width : '90%', justifyContent : 'space-between', marginTop : 20}}>
+          <Text style={styles.priceProduct}>Favorit</Text>
+          <Text onPress={()=>{
+            navigation.navigate('Products')
+          }}>See more</Text>
+        </View>
       <FlatList horizontal={true} data={favProduct} renderItem={renderProduct}/>
       </View>
       <View style={{flex : 1}}>

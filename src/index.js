@@ -4,7 +4,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import Auth from './screens/auth';
-import Profile from './screens/profile';
+// import Profile from './screens/profile';
 import Home from './screens/home';
 import SignIn from './screens/auth/SignIn';
 import SignUp from './screens/auth/SignUp';
@@ -19,6 +19,9 @@ import Reset from './screens/auth/Reset';
 import History from './screens/cart/History';
 import SplashScreen from './screens/splash/SplashScreen';
 import ImagePicker from './components/imagePicker/ImagePicker';
+import Products from './screens/products/Products';
+import EditProduct from './screens/editProduct/EditProduct';
+import AddProduct from './screens/addProduct/AddProduct';
 
 const Router = () => {
   const Stack = createNativeStackNavigator()
@@ -42,6 +45,9 @@ const Router = () => {
         <Stack.Screen name='Payment' component={Payment} options={{headerShown : false}}/>
         <Stack.Screen name='Reset' component={Reset} options={{headerShown : false}}/>
         <Stack.Screen name='History' component={History} options={{headerShown : false}}/>
+        <Stack.Screen name='Products' component={Products} options={{headerShown : false}}/>
+        <Stack.Screen name='EditProduct' component={EditProduct} options={{headerShown : false}}/>
+        <Stack.Screen name='AddProduct' component={AddProduct} options={{headerShown : false}}/>
       </Stack.Navigator>
     </NavigationContainer>
     </>

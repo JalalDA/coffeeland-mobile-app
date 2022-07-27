@@ -21,6 +21,25 @@ export const getDetailProduct = (id)=>{
     return axios.get(`${SERVER_HOST}/product/${id}`)
 }
 
+export const createProduct = (body, token)=>{
+    const config = {
+        headers : {
+            'content-type' : 'multipart/form-data',
+            Authorization : `Bearer ${token}`
+        }
+    }
+    return axios.post(`${SERVER_HOST}/product/`, body, config )
+}
+
+export const updateProduct =  (id, body, token)=>{
+    const config = {
+        headers : {
+            'content-type' : 'multipart/form-data',
+            Authorization : `Bearer ${token}`
+        }
+    }
+    return axios.patch(`${SERVER_HOST}/product/${id}`, body, config)
+}
 export const getDetailProfile = (token)=>{
     const config = {
         headers : {
@@ -69,4 +88,21 @@ export const updateProfile = (body, token)=>{
         }
     }
     return axios.patch(`${SERVER_HOST}/user`, body, config)
+}
+
+export const logout = (token)=>{
+    const config = {
+        headers : {
+            Authorization:`Bearer ${token}`
+        }
+    }
+    return axios.delete(`${SERVER_HOST}/auth/logout`, config)
+}
+
+export const getAllProduct = (params)=>{
+    return axios.get(`${SERVER_HOST}/product/${params}`)
+}
+
+export const filterProduct = (params)=>{
+    return axios.get(`${SERVER_HOST}/product/filter?${params}`)
 }

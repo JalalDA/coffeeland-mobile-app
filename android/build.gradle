@@ -7,8 +7,17 @@ buildscript {
         buildToolsVersion = "31.0.0"
         minSdkVersion = 21
         compileSdkVersion = 31
-        targetSdkVersion = 31
+        targetSdkVersion = 30
         kotlin_version = '1.6.10'
+        googlePlayServicesVersion = "+" // default: "+"
+        firebaseMessagingVersion = "21.1.0" // default: "21.1.0"
+
+    // Other settings
+    // compileSdkVersion = <Your compile SDK version> // default: 23
+    // buildToolsVersion = "<Your build tools version>" // default: "23.0.1"
+    // targetSdkVersion = <Your target SDK version> // default: 23
+    supportLibVersion = "23.1.1" // default: 23.1.1
+
         if (System.properties['os.arch'] == "aarch64") {
             // For M1 Users we need to use the NDK 24 which added support for aarch64
             ndkVersion = "24.0.8215888"
@@ -26,6 +35,8 @@ buildscript {
         classpath("com.facebook.react:react-native-gradle-plugin")
         classpath("de.undercouch:gradle-download-task:5.0.1")
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version" 
+        //remote notification
+        classpath('com.google.gms:google-services:4.3.13')
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }

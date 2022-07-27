@@ -7,6 +7,7 @@ import bank from '../../assets/img/bank.png'
 import cod from '../../assets/img/cod.png'
 import { createTransaction } from '../../modules/axios'
 import { useSelector } from 'react-redux'
+import { sendPaymentNotification } from "../../helpers/Notification";
 
 const Payment = ({navigation, route}) => {
   const [paymentMethod, setPaymentMethod] = useState('Card')
@@ -30,6 +31,7 @@ const Payment = ({navigation, route}) => {
       }
       const res = await createTransaction(body, token)
       console.log(res);
+      sendPaymentNotification('Payment success', `Thankyou for your ordering ${product.name}`)
       setMsg("Transaction success")
       setShowModal(true)
       setLoad(false)

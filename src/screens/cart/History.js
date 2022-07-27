@@ -45,7 +45,10 @@ const History = () => {
         const getUserHistory = async ()=>{
             try {
                 const result = await getHistory(token)
-                setProduct(result.data.data)
+                // console.log('first');
+                if(result){
+                  setProduct([...product], result.data.data)
+                }
             } catch (error) {
                 console.log(error);
             }

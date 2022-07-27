@@ -1,4 +1,4 @@
-import { View, Text, Button, Image, StatusBar } from 'react-native'
+import { View, Text, Button, Image, StatusBar, Modal, ActivityIndicator, Pressable } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { getProfileInfo } from '../../redux/slice/profileSlice'
@@ -13,12 +13,32 @@ import Homepage from '../homepage';
 import styles from './styles';
 import Toast from 'react-native-toast-message';
 import nulProfile from '../../assets/img/nullProfile.png'
+import { logout } from '../../modules/axios';
 
 import Profile from '../profile';
 
   const CustomDrawer = (props)=>{
     const {photo, display_name, email} = useSelector(state=>state.profile.value)
     const dispatch = useDispatch()
+    const {token} = useSelector(state=>state.login)
+    // console.log(token);
+    const [modalShow, setModalShow] = useState(false)
+    const [load, setLoad] = useState(false)
+    const logoutServer = async ()=>{
+      try {
+        setLoad(true)
+        // const res = await logout(token)
+        // console.log(res.data.msg);
+        const res = dispatch(deleteUserInfo())
+        setLoad(false)
+        if(res){
+            props.navigation.navigate('Sign In')
+        }
+      } catch (error) {
+        console.log(error.response);
+        setLoad(false)
+      }
+    }
     return (
         <>
         <StatusBar backgroundColor={'transparent'} barStyle={'dark-content'}/>
@@ -27,15 +47,39 @@ import Profile from '../profile';
             <Text style={{color : '#FFFFFF', fontSize : 17, fontWeight : '600', marginTop : 10}}>{display_name}</Text>
             <Text style={{color : '#FFFFFF', fontSize : 14, fontWeight : '400', marginTop : 10}}>{email}</Text>
         </View>
+        <Modal
+          animationType='slide'
+          transparent={true}
+          visible={modalShow}
+          onRequestClose={()=>{
+            setModalShow(!modalShow)
+          }}>
+            <View style={styles.modalView}>
+              <View style={styles.cardModal}> 
+                <Text style={{color : '#FFFFFF', fontSize : 18, fontWeight : '700'}}>Delete item?</Text>
+              <View style={styles.option}>
+              <Pressable style={styles.btnOption} 
+                onPress={logoutServer}>
+                {load ? <ActivityIndicator size={'small'} color={'#FFA32B'}/> : <Text>Yes</Text>}</Pressable>
+              <Pressable style={styles.btnOption} 
+                onPress={()=>{
+                setModalShow(false)
+              }}><Text>No</Text></Pressable>
+            </View>
+            </View>
+            </View>
+          </Modal>
         <DrawerContentScrollView {...props}>
             <DrawerItemList {...props}/>
                 {/* <DrawerItem onPress={()=>props.navigation.closeDrawer} label="Close Drawer"/>
                 <DrawerItem onPress={()=>props.navigation.toggleDrawer} label="Togle Drawer"/> */}
                 <DrawerItem onPress={()=>{
-                  const loggedout = dispatch(deleteUserInfo())
-                  if(loggedout){
-                    props.navigation.navigate('Sign In')
-                  }
+                  setModalShow(true)
+                  // const loggedout = 
+                  // dispatch(deleteUserInfo())
+                  // if(loggedout){
+                  //   props.navigation.navigate('Sign In')
+                  // }
                 }} label="Log out"/>
         </DrawerContentScrollView>
         </>
@@ -45,8 +89,7 @@ import Profile from '../profile';
 const Drawer = createDrawerNavigator()
 
 
-const MyDrawer = () => {
-
+const MyDrawer = ({navigation}) => {
   const {token, isSucces} = useSelector(state=>state.login)
   console.log(token);
   const dispatch = useDispatch()
@@ -66,6 +109,9 @@ const MyDrawer = () => {
     }
     if(token){
       getProfile()
+    }
+    if(!token){
+      navigation.navigate('Sign In')
     }
 }, [])
   return (
